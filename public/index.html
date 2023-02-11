@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="inputFile">
+    <button type="button" id="btnUpload">Upload</button>
+    <br>
+    <br>
+    <textarea style="width:300px; height: 150px;" id="resultText" placeholder="Your PDF text pops up here"></textarea>
+    <script>
+        const inputFile = document.getElementById('inputFile')
+        const btnUpload = document.getElementById('btnUpload')
+        const resultText = document.getElementById('resultText')
+
+        btnUpload.addEventListener('click', () => {
+            const formData = new FormData() 
+
+            formData.append('pdfFile', inputFile.files[0])
+            
+            fetch("/extract-text", {
+                method: 'post',
+                body: formData
+            }).then(response => {
+                //server side will respond with text
+                return response.text()
+            }).then(extractedText => {
+                resultText.value = extractedText.trim()
+            })
+        })
+    </script>
+</body>
+</html>
