@@ -16,6 +16,10 @@ app.post('/extract-text', (req, res) => {
 
     pdfParse(req.files.pdfFile).then(results => {
         res.send(results.text)
+    }).catch(err => {
+        console.log(err)
+        res.statusCode(500)
+        res.end()
     })
 })
 

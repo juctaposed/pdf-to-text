@@ -9,13 +9,18 @@
 <body>
     <input type="file" id="inputFile">
     <button type="button" id="btnUpload">Upload</button>
+    <button type="button" id="btnSave">Save</button>
     <br>
     <br>
     <textarea style="width:300px; height: 150px;" id="resultText" placeholder="Your PDF text pops up here"></textarea>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
         const inputFile = document.getElementById('inputFile')
         const btnUpload = document.getElementById('btnUpload')
+        const btnSave = document.getElementById('btnSave')
         const resultText = document.getElementById('resultText')
+
+        let extractedText = null
 
         btnUpload.addEventListener('click', () => {
             const formData = new FormData() 
@@ -31,6 +36,15 @@
             }).then(extractedText => {
                 resultText.value = extractedText.trim()
             })
+        })
+        btnSave.addEventListener('click', () => {
+            const textToSave = resultText.value.trim()
+            if(textToSave) {
+                const blob = new Blob([textToSave], { type: 'text/plain;charset=utf-8' })
+                saveAs(blob, `${inputFile}.txt`)
+            } else {
+                console.error('No text to save')
+            }
         })
     </script>
 </body>
