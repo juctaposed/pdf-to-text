@@ -26,6 +26,7 @@
             const formData = new FormData() 
 
             formData.append('pdfFile', inputFile.files[0])
+
             
             fetch("/extract-text", {
                 method: 'post',
@@ -38,10 +39,12 @@
             })
         })
         btnSave.addEventListener('click', () => {
+            const originalFileName = inputFile.files[0].name
+            const newFileName = originalFileName.replace(/\.[^/.]+$/, "") + ".txt"
             const textToSave = resultText.value.trim()
             if(textToSave) {
                 const blob = new Blob([textToSave], { type: 'text/plain;charset=utf-8' })
-                saveAs(blob, `${inputFile}.txt`)
+                saveAs(blob, `${newFileName}`)
             } else {
                 console.error('No text to save')
             }
